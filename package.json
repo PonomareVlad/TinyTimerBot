@@ -1,0 +1,25 @@
+{
+  "name": "grammy-vercel-edge-stream",
+  "author": "Vladislav Ponomarev <PonomareVlad@users.noreply.github.com> (https://PonomareVlad.ru)",
+  "funding": "https://PonomareVlad.ru/donate",
+  "license": "MIT",
+  "scripts": {
+    "env": "vercel env pull .env",
+    "vercel": "vercel dev --listen 3000",
+    "polling": "npm run env && npm run start",
+    "webhook": "npm run tunnel & npm run vercel",
+    "tunnel": "cloudflared tunnel --url http://localhost:3000",
+    "start": "node --watch -r dotenv/config src/start.mjs"
+  },
+  "dependencies": {
+    "@roziscoding/grammy-autoquote": "^1.1.2",
+    "grammy": "^1.16.2",
+    "vercel-grammy": "0.0.6"
+  },
+  "devDependencies": {
+    "dotenv": "^16.3.0"
+  },
+  "engines": {
+    "node": "^18.0.0"
+  }
+}
