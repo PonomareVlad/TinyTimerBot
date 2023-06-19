@@ -14,14 +14,20 @@ bot.command("minutes", ctx => {
     return checkValue(ctx, minutes) || runTimer(ctx, minutes * 60);
 });
 
+bot.command("hours", ctx => {
+    const hours = parseInt(ctx.match.trim());
+    return checkValue(ctx, hours) || runTimer(ctx, hours * 60 * 60);
+});
+
 bot.on("message:text", ctx => {
     const message = [
         "You can set timer following this examples:",
         "",
-        "`/minutes 15` — for quarter of an hour",
         "`/seconds 30` — for half of minute",
+        "`/minutes 15` — for quarter of an hour",
+        "`/hours 12` — for half a day",
         "",
-        "Please note that this bot is currently in demo mode and is hard limited to 5 minutes for any timers.",
+        "Please note that this bot is currently in demo mode and is hard limited to 24 hours for any timers.",
     ]
     return ctx.reply(message.join("\r\n"), {parse_mode: "Markdown"});
 });
@@ -45,8 +51,9 @@ async function runTimer(ctx, seconds) {
 }
 
 function getTimerMessage(seconds) {
-    const time = new Date(seconds * 1000).toISOString().substring(14, 19);
-    return `${time} \r\n\r\nYou will be notified when the timer ends`;
+    const time = new Date(seconds * 1000).toISOString().substring(11, 19).split(":");
+    const segments = time.reduce((time, segment) => segment === "00" && !time.length ? time : [...time, segment], []);
+    return `⏳ ${segments.join(":") || "00"} \r\n\r\nYou will be notified when the timer ends`;
 }
 
 function checkValue(ctx, value) {
