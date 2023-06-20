@@ -25,9 +25,8 @@ bot.on("message:text", ctx => {
         "",
         "`/seconds 30` — for half of minute",
         "`/minutes 15` — for quarter of an hour",
-        "`/hours 12` — for half a day",
         "",
-        "Please note that this bot is currently in demo mode and is hard limited to 24 hours for any timers.",
+        "Please note that this bot is currently in demo mode and is hard limited to 15 minutes for any timers.",
     ]
     return ctx.reply(message.join("\r\n"), {parse_mode: "Markdown"});
 });
