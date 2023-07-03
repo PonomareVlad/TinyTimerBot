@@ -1,15 +1,31 @@
 import {bot} from "./bot.mjs";
 import {prefix, secretToken} from "./data.mjs";
-import {saveInfo, setWebhook} from "vercel-grammy";
+import {setWebhook} from "vercel-grammy";
 
-if (process.env.VERCEL_ENV === "development") process.exit();
+const {VERCEL_ENV} = process.env;
 
-if (await setWebhook(bot, {prefix, secret_token: secretToken})) {
+// List of allowed environments
+const allowedEnvs = [
+    "production",
+    // "preview"
+];
+
+// Exit in case of unsuitable environments
+if (!allowedEnvs.includes(VERCEL_ENV)) process.exit();
+
+// Webhook URL generation
+const url = prefix + getURL({path: "api/update"});
+
+// Webhook setup options
+const options = {secret_token: secretToken};
+
+// Installing a webhook
+if (await bot.api.setWebhook(url, options)) {
+
+    // Checking the webhook installation
     const {url} = await bot.api.getWebhookInfo();
-    console.info("Secret token:", secretToken);
+
     console.info("Webhook set to URL:", url);
+    console.info("Secret token:", secretToken);
+
 }
-
-const path = new URL("../info.json", import.meta.url);
-
-console.info("Bot info:", await saveInfo(bot, {path}));
