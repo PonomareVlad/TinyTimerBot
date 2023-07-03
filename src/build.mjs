@@ -1,6 +1,5 @@
 import {bot} from "./bot.mjs";
 import {prefix, secretToken} from "./data.mjs";
-import {setWebhook} from "vercel-grammy";
 
 const {VERCEL_ENV} = process.env;
 
