@@ -1,6 +1,6 @@
 import {bot} from "./bot.mjs";
 import {prefix, secretToken} from "./data.mjs";
-import {saveInfo, setWebhook} from "vercel-grammy/build";
+import {saveInfo, setWebhook} from "vercel-grammy";
 
 if (process.env.VERCEL_ENV === "development") process.exit();
 
