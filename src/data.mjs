@@ -1,7 +1,3 @@
-import info from "../info.json" assert {type: "json"};
-
-export const botInfo = info || undefined;
-
 export const {
     TIMER_LIMIT,
     WEBHOOK_PREFIX: prefix,
