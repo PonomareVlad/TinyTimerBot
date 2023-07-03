@@ -1,10 +1,10 @@
 import {Bot} from "grammy";
 import {promisify} from "util";
-import {token, botInfo, timerLimit} from "./data.mjs";
+import {token, timerLimit} from "./data.mjs";
 
 const wait = promisify((a, f) => setTimeout(f, a));
 
-export const bot = new Bot(token, {botInfo});
+export const bot = new Bot(token);
 
 bot.command("seconds", ctx => {
     const seconds = parseInt(ctx.match.trim());
