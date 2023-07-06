@@ -1,11 +1,11 @@
 import {bot} from "../src/bot.mjs";
 import {secretToken} from "../src/data.mjs";
-import {webhookStream} from "vercel-grammy";
+import {webhookCallback} from "grammy";
 
 export const config = {runtime: "edge"};
 
-export default webhookStream(bot, {
-    timeoutMilliseconds: 70_000,
+export default webhookCallback(bot, "std/http", {
+    timeoutMilliseconds: 24_900,
     onTimeout: "return",
     secretToken,
 });
