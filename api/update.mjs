@@ -5,7 +5,7 @@ import {webhookStream} from "vercel-grammy";
 export const config = {runtime: "edge"};
 
 export default webhookStream(bot, {
-    timeoutMilliseconds: 16 * 60 * 1000,
+    timeoutMilliseconds: 1_000_000,
     onTimeout: "return",
     secretToken,
 });
