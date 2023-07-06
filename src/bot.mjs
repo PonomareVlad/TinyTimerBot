@@ -26,9 +26,9 @@ bot.on("message:text", ctx => {
         "You can set timer following this examples:",
         "",
         "`/seconds 30` — for half of minute",
-        "`/minutes 15` — for quarter of an hour",
+        // "`/minutes 15` — for quarter of an hour",
         "",
-        "Please note that this bot is currently in demo mode and is hard limited to 15 minutes for any timers.",
+        "Please note that this bot is currently in demo mode and is hard limited to 60 seconds for any timers.",
     ]
     return ctx.reply(message.join("\r\n"), {parse_mode: "Markdown"});
 });

@@ -1,20 +1,20 @@
 import {bot} from "./bot.mjs";
 import {getURL} from "vercel-grammy";
-import {prefix, secretToken} from "./data.mjs";
+import {secretToken} from "./data.mjs";
 
 const {VERCEL_ENV} = process.env;
 
 // List of allowed environments
 const allowedEnvs = [
     "production",
-    // "preview"
+    "preview"
 ];
 
 // Exit in case of unsuitable environments
 if (!allowedEnvs.includes(VERCEL_ENV)) process.exit();
 
 // Webhook URL generation
-const url = prefix + getURL({path: "api/update"});
+const url = getURL({path: "api/update"});
 
 // Webhook setup options
 const options = {secret_token: secretToken};
