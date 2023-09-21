@@ -6,6 +6,6 @@ export const config = {runtime: "edge"};
 
 export default webhookStream(bot, {
     timeoutMilliseconds: 1_000_000_000,
-    onTimeout: "return",
+    onTimeout: "throw",
     secretToken,
 });

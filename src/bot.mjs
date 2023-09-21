@@ -34,16 +34,17 @@ bot.on("message:text", ctx => {
 });
 
 async function runTimer(ctx, seconds) {
-    let controller = new AbortController();
+    // let controller = new AbortController();
     if (seconds > timerLimit) seconds = timerLimit;
     const {message_id: reply_to_message_id} = ctx.msg;
     const {message_id, chat: {id}} = await ctx.reply(getTimerMessage(seconds), {reply_to_message_id});
     const interval = setInterval(() => {
         if (seconds < 1) return clearInterval(interval);
         seconds -= 1;
-        controller.abort();
-        controller = new AbortController();
-        ctx.editMessageText(getTimerMessage(seconds), {message_id}, controller.signal).catch(console.error);
+        // controller.abort();
+        // controller = new AbortController();
+        // ctx.editMessageText(getTimerMessage(seconds), {message_id}, controller.signal).catch(console.error);
+        if (String(seconds).endsWith("0")) return ctx.reply(String(seconds));
     }, 1000);
     await wait(1000 * seconds);
     clearInterval(interval);
