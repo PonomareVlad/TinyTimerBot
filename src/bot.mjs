@@ -27,28 +27,37 @@ bot.on("message:text", ctx => {
         "",
         "`/seconds 30` — for half of minute",
         "`/minutes 15` — for quarter of an hour",
-        "",
-        "Please note that this bot is currently in demo mode and is hard limited to 15 minutes for any timers.",
     ]
     return ctx.reply(message.join("\r\n"), {parse_mode: "Markdown"});
 });
 
 async function runTimer(ctx, seconds) {
-    // let controller = new AbortController();
+    let controller = new AbortController();
     if (seconds > timerLimit) seconds = timerLimit;
     const {message_id: reply_to_message_id} = ctx.msg;
-    const {message_id, chat: {id}} = await ctx.reply(getTimerMessage(seconds), {reply_to_message_id});
+    console.log(`[${reply_to_message_id}]`, `Timer for:`, seconds, "seconds started...");
+    const {message_id, chat: {id}} =
+        await ctx.reply(getTimerMessage(seconds), {reply_to_message_id});
     const interval = setInterval(() => {
-        if (seconds < 1) return clearInterval(interval);
-        seconds -= 1;
-        // controller.abort();
-        // controller = new AbortController();
-        // ctx.editMessageText(getTimerMessage(seconds), {message_id}, controller.signal).catch(console.error);
-        if (String(seconds).endsWith("0")) return ctx.reply(String(seconds));
+        try {
+            seconds -= 1;
+            if (seconds < 0)
+                return clearInterval(interval);
+            controller.abort();
+            controller = new AbortController();
+            ctx.editMessageText(
+                getTimerMessage(seconds),
+                {message_id},
+                controller.signal
+            ).catch(console.error);
+        } catch (e) {
+            console.error(e);
+        }
     }, 1000);
     await wait(1000 * seconds);
     clearInterval(interval);
     await ctx.reply("Time is up !", {reply_to_message_id});
+    console.log(`[${reply_to_message_id}]`, `Timer for:`, seconds, "seconds complete !");
     return ctx.api.deleteMessage(id, message_id);
 }
 
