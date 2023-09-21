@@ -2,6 +2,8 @@ import {Bot} from "grammy";
 import {promisify} from "util";
 import {token, timerLimit} from "./data.mjs";
 
+const requestsLimit = 940;
+
 const wait = promisify((a, f) => setTimeout(f, a));
 
 export const bot = new Bot(token);
@@ -35,6 +37,7 @@ async function runTimer(ctx, seconds) {
     let controller = new AbortController();
     if (seconds > timerLimit) seconds = timerLimit;
     const {message_id: reply_to_message_id} = ctx.msg;
+    const throttle = Math.ceil(seconds / requestsLimit);
     console.log(`[${reply_to_message_id}]`, `Timer for:`, seconds, "seconds started...");
     const {message_id, chat: {id}} =
         await ctx.reply(getTimerMessage(seconds), {reply_to_message_id});
@@ -43,6 +46,7 @@ async function runTimer(ctx, seconds) {
             seconds -= 1;
             if (seconds < 0)
                 return clearInterval(interval);
+            if (seconds % throttle) return;
             controller.abort();
             controller = new AbortController();
             ctx.editMessageText(
